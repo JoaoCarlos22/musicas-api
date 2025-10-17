@@ -8,7 +8,8 @@ try
 {
     string resposta = await client.GetStringAsync("https://guilhermeonrails.github.io/api-csharp-songs/songs.json");
     var musicas = JsonSerializer.Deserialize<List<Musica>>(resposta)!;
-    Filter.GenerosFiltro(musicas);
+    //Filter.GenerosFiltro(musicas);
+    Order.ArtistasEmOrdem(musicas);
 }
 catch (Exception ex)
 {
