@@ -34,4 +34,22 @@ internal class Filter
             Console.WriteLine(artista);
         }
     }
+
+    public static void MusicasPorArtista(List<Musica> musicas, string artista)
+    {
+        var musicasDoArtista = musicas
+            .Where(m => m.Artista!.Equals(artista))
+            .ToList();
+
+        if (musicasDoArtista.Count == 0)
+        {
+            Console.WriteLine("Nenhuma música encontrada para este artista.");
+            return;
+        }
+        Console.WriteLine($"Músicas do artista '{artista}':");
+        foreach (var musica in musicasDoArtista)
+        {
+            Console.WriteLine($"- {musica.Nome} ({musica.Genero})");
+        }
+    }
 }

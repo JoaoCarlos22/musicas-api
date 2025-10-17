@@ -10,7 +10,8 @@ try
     var musicas = JsonSerializer.Deserialize<List<Musica>>(resposta)!;
     //Filter.GenerosFiltro(musicas);
     //Order.ArtistasEmOrdem(musicas);
-    Filter.ArtistasPorGenero(musicas, "rock");
+    //Filter.ArtistasPorGenero(musicas, "rock");
+    Filter.MusicasPorArtista(musicas, "Red Hot Chili Peppers");
 }
 catch (Exception ex)
 {
