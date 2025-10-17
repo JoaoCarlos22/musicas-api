@@ -23,6 +23,7 @@ try
         Console.WriteLine("2 - Artistas em ordem");
         Console.WriteLine("3 - Artistas por gênero");
         Console.WriteLine("4 - Músicas por artista");
+        Console.WriteLine("5 - Todas as músicas");
         Console.WriteLine("0 - Sair");
         Console.Write("Escolha uma opção: ");
 
@@ -61,6 +62,14 @@ try
                     break;
                 }
                 Filter.MusicasPorArtista(musicas, artista.Trim());
+                break;
+            
+            case "5":
+                Console.WriteLine("=== Todas as Músicas ===");
+                foreach (var musica in musicas)
+                {
+                    musica.ExibirDetalhes();
+                }
                 break;
 
             default:
