@@ -23,7 +23,8 @@ try
         Console.WriteLine("2 - Artistas em ordem");
         Console.WriteLine("3 - Artistas por gênero");
         Console.WriteLine("4 - Músicas por artista");
-        Console.WriteLine("5 - Todas as músicas");
+        Console.WriteLine("5 - Músicas por tom");
+        Console.WriteLine("6 - Todas as músicas");
         Console.WriteLine("0 - Sair");
         Console.Write("Escolha uma opção: ");
 
@@ -65,6 +66,17 @@ try
                 break;
             
             case "5":
+                Console.Write("Digite o tom (ex: C): ");
+                var tom = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(tom))
+                {
+                    Console.WriteLine("Tom inválido. Tente novamente");
+                    break;
+                }
+                Filter.MusicasPorTom(musicas, tom.Trim());
+                break;
+
+            case "6":
                 Console.WriteLine("=== Todas as Músicas ===");
                 foreach (var musica in musicas)
                 {

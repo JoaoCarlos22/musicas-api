@@ -52,4 +52,21 @@ internal class Filter
             Console.WriteLine($"- {musica.Nome} ({musica.Genero})");
         }
     }
+
+    public static void MusicasPorTom(List<Musica> musicas, string tom)
+    {
+        var musicasDoTom = musicas
+            .Where(m => m.Tom!.Equals(tom))
+            .ToList();
+
+        if (musicasDoTom.Count == 0)
+        {
+            Console.WriteLine("Nenhuma música encontrada para este tom.");
+        }
+        Console.WriteLine($"Músicas no tom '{tom}':");
+        foreach (var musica in musicasDoTom)
+        {
+            Console.WriteLine($"- {musica.Nome} ({musica.Genero})");
+        }
+    }
 }
