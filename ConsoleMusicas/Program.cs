@@ -1,6 +1,11 @@
 ﻿using System.Text.Json;
+<<<<<<< Updated upstream:Program.cs
 using ApiMusicas.Filters;
 using ApiMusicas.Models;
+=======
+using ConsoleMusicas.Filters;
+using Musicas.Core.Models;
+>>>>>>> Stashed changes:ConsoleMusicas/Program.cs
 
 using HttpClient client = new();
 
