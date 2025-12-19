@@ -21,11 +21,29 @@ public class Musica
     [JsonPropertyName("key")]
     public int TomKey { get; set; }
 
+    [JsonPropertyName("year")]
+    public string? Ano { get; set; }
+
+    [JsonPropertyName("popularity")]
+    public string? PopularidadeString { get; set; }
+
     public string? Tom
     {
         get
         {
             return tonalidades[TomKey];
+        }
+    }
+
+    public int Popularidade
+    {
+        get
+        {
+            if (int.TryParse(PopularidadeString, out int popularidade))
+            {
+                return popularidade;
+            }
+            return 0;
         }
     }
 
