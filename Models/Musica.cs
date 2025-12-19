@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace ApiMusicas.Models;
+namespace ConsoleMusicas.Models;
 
 internal class Musica
 {

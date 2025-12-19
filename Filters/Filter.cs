@@ -1,6 +1,6 @@
-using ApiMusicas.Models;
+using ConsoleMusicas.Models;
 
-namespace ApiMusicas.Filters;
+namespace ConsoleMusicas.Filters;
 
 internal class Filter
 {

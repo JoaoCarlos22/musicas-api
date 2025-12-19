@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
-using ApiMusicas.Filters;
-using ApiMusicas.Models;
+using ConsoleMusicas.Filters;
+using ConsoleMusicas.Models;
 
 using HttpClient client = new();
 
