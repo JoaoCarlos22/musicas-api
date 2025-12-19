@@ -1,10 +1,6 @@
-<<<<<<< Updated upstream:Filters/Filter.cs
-using ApiMusicas.Models;
-=======
 using Musicas.Core.Models;
->>>>>>> Stashed changes:ConsoleMusicas/Filters/Filter.cs
 
-namespace ApiMusicas.Filters;
+namespace ConsoleMusicas.Filters;
 
 internal class Filter
 {

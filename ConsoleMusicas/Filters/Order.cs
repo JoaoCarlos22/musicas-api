@@ -1,10 +1,6 @@
-<<<<<<< Updated upstream:Filters/Order.cs
-using ApiMusicas.Models;
-=======
 using Musicas.Core.Models;
->>>>>>> Stashed changes:ConsoleMusicas/Filters/Order.cs
 
-namespace ApiMusicas.Filters;
+namespace ConsoleMusicas.Filters;
 
 internal class Order
 {
