@@ -16,17 +16,23 @@ public class MusicasController : ControllerBase
         _musicasServices = musicasServices;
     }
 
+    private static bool InvalidPage(int page) => page < 0;
+    private static bool InvalidPageSize(int pageSize) => pageSize <= 0;
+
     /// <summary>
     /// Retorna todas as músicas
     /// </summary>
     [HttpGet]
-    public async Task<ActionResult<MusicasResponseDto>> GetTodasMusicas()
+    public async Task<ActionResult<MusicasResponseDto>> GetTodasMusicas([FromQuery] int page = 0, [FromQuery] int pageSize = 10)
     {
-        var musicas = await _musicasServices.GetMusicasDtoAsync();
+        if (InvalidPage(page) || InvalidPageSize(pageSize))
+            return BadRequest("Parâmetros de paginação inválidos. 'page' deve ser >= 0 e 'pageSize' >= 1.");
+
+        var (items, total) = await _musicasServices.GetMusicasDtoAsync(page, pageSize);
         return Ok(new MusicasResponseDto
         {
-            Total = musicas.Count,
-            Items = musicas
+            Total = total,
+            Items = items
         });
     }
 
@@ -34,13 +40,16 @@ public class MusicasController : ControllerBase
     /// Retorna todos os gêneros musicais disponíveis
     /// </summary>
     [HttpGet("generos")]
-    public async Task<ActionResult<StringResponseDto>> GetGeneros()
+    public async Task<ActionResult<StringResponseDto>> GetGeneros([FromQuery] int page = 0, [FromQuery] int pageSize = 10)
     {
-        var generos = await _musicasServices.GetGenerosAsync();
+        if (InvalidPage(page) || InvalidPageSize(pageSize))
+            return BadRequest("Parâmetros de paginação inválidos. 'page' deve ser >= 0 e 'pageSize' >= 1.");
+
+        var (items, total) = await _musicasServices.GetGenerosAsync(page, pageSize);
         return Ok(new StringResponseDto
         {
-            Total = generos.Count,
-            Items = generos
+            Total = total,
+            Items = items
         });
     }
 
@@ -48,13 +57,16 @@ public class MusicasController : ControllerBase
     /// Retorna todos os artistas em ordem alfabética
     /// </summary>
     [HttpGet("artistas")]
-    public async Task<ActionResult<StringResponseDto>> GetArtistas()
+    public async Task<ActionResult<StringResponseDto>> GetArtistas([FromQuery] int page = 0, [FromQuery] int pageSize = 10)
     {
-        var artistas = await _musicasServices.GetArtistasAsync();
+        if (InvalidPage(page) || InvalidPageSize(pageSize))
+            return BadRequest("Parâmetros de paginação inválidos. 'page' deve ser >= 0 e 'pageSize' >= 1.");
+
+        var (items, total) = await _musicasServices.GetArtistasAsync(page, pageSize);
         return Ok(new StringResponseDto
         {
-            Total = artistas.Count,
-            Items = artistas
+            Total = total,
+            Items = items
         });
     }
 
@@ -63,24 +75,22 @@ public class MusicasController : ControllerBase
     /// </summary>
     /// <param name="genero">Nome do gênero (ex: rock)</param>
     [HttpGet("artistas/genero/{genero}")]
-    public async Task<ActionResult<StringResponseDto>> GetArtistasPorGenero(string genero)
+    public async Task<ActionResult<StringResponseDto>> GetArtistasPorGenero(string genero, [FromQuery] int page = 0, [FromQuery] int pageSize = 10)
     {
         if (string.IsNullOrWhiteSpace(genero))
             return BadRequest("Gênero não pode ser vazio");
+        if (InvalidPage(page) || InvalidPageSize(pageSize))
+            return BadRequest("Parâmetros de paginação inválidos. 'page' deve ser >= 0 e 'pageSize' >= 1.");
 
-        var artistas = await _musicasServices.GetArtistasPorGeneroAsync(genero);
-        
-        if (artistas.Count == 0)
-            return NotFound(new StringResponseDto
-            {
-                Total = 0,
-                Items = new List<string>()
-            });
+        var (items, total) = await _musicasServices.GetArtistasPorGeneroAsync(genero, page, pageSize);
+
+        if (total == 0)
+            return NotFound(new StringResponseDto { Total = 0, Items = [] });
 
         return Ok(new StringResponseDto
         {
-            Total = artistas.Count,
-            Items = artistas
+            Total = total,
+            Items = items
         });
     }
 
@@ -89,24 +99,22 @@ public class MusicasController : ControllerBase
     /// </summary>
     /// <param name="artista">Nome do artista</param>
     [HttpGet("artista/{artista}")]
-    public async Task<ActionResult<MusicasResponseDto>> GetMusicasPorArtista(string artista)
+    public async Task<ActionResult<MusicasResponseDto>> GetMusicasPorArtista(string artista, [FromQuery] int page = 0, [FromQuery] int pageSize = 10)
     {
         if (string.IsNullOrWhiteSpace(artista))
             return BadRequest("Artista não pode ser vazio");
+        if (InvalidPage(page) || InvalidPageSize(pageSize))
+            return BadRequest("Parâmetros de paginação inválidos. 'page' deve ser >= 0 e 'pageSize' >= 1.");
 
-        var musicas = await _musicasServices.GetMusicasPorArtistaDtoAsync(artista);
-        
-        if (musicas.Count == 0)
-            return NotFound(new MusicasResponseDto
-            {
-                Total = 0,
-                Items = new List<MusicaDto>()
-            });
+        var (items, total) = await _musicasServices.GetMusicasPorArtistaDtoAsync(artista, page, pageSize);
+
+        if (total == 0)
+            return NotFound(new MusicasResponseDto { Total = 0, Items = [] });
 
         return Ok(new MusicasResponseDto
         {
-            Total = musicas.Count,
-            Items = musicas
+            Total = total,
+            Items = items
         });
     }
 
@@ -115,24 +123,22 @@ public class MusicasController : ControllerBase
     /// </summary>
     /// <param name="tom">Tom musical (ex: C, D, E)</param>
     [HttpGet("tom/{tom}")]
-    public async Task<ActionResult<MusicasResponseDto>> GetMusicasPorTom(string tom)
+    public async Task<ActionResult<MusicasResponseDto>> GetMusicasPorTom(string tom, [FromQuery] int page = 0, [FromQuery] int pageSize = 10)
     {
         if (string.IsNullOrWhiteSpace(tom))
             return BadRequest("Tom não pode ser vazio");
+        if (InvalidPage(page) || InvalidPageSize(pageSize))
+            return BadRequest("Parâmetros de paginação inválidos. 'page' deve ser >= 0 e 'pageSize' >= 1.");
 
-        var musicas = await _musicasServices.GetMusicasPorTomDtoAsync(tom);
-        
-        if (musicas.Count == 0)
-            return NotFound(new MusicasResponseDto
-            {
-                Total = 0,
-                Items = new List<MusicaDto>()
-            });
+        var (items, total) = await _musicasServices.GetMusicasPorTomDtoAsync(tom, page, pageSize);
+
+        if (total == 0)
+            return NotFound(new MusicasResponseDto { Total = 0, Items = [] });
 
         return Ok(new MusicasResponseDto
         {
-            Total = musicas.Count,
-            Items = musicas
+            Total = total,
+            Items = items
         });
     }
 }
