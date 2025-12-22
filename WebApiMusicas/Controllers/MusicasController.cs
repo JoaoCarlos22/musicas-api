@@ -16,34 +16,54 @@ public class MusicasController : ControllerBase
         _musicasServices = musicasServices;
     }
 
+    /// <summary>
     /// Retorna todas as músicas
+    /// </summary>
     [HttpGet]
-    public async Task<ActionResult<List<MusicaDto>>> GetTodasMusicas()
+    public async Task<ActionResult<MusicasResponseDto>> GetTodasMusicas()
     {
         var musicas = await _musicasServices.GetMusicasDtoAsync();
-        return Ok(musicas);
+        return Ok(new MusicasResponseDto
+        {
+            Total = musicas.Count,
+            Items = musicas
+        });
     }
 
+    /// <summary>
     /// Retorna todos os gêneros musicais disponíveis
+    /// </summary>
     [HttpGet("generos")]
-    public async Task<ActionResult<List<string>>> GetGeneros()
+    public async Task<ActionResult<StringResponseDto>> GetGeneros()
     {
         var generos = await _musicasServices.GetGenerosAsync();
-        return Ok(generos);
+        return Ok(new StringResponseDto
+        {
+            Total = generos.Count,
+            Items = generos
+        });
     }
 
+    /// <summary>
     /// Retorna todos os artistas em ordem alfabética
+    /// </summary>
     [HttpGet("artistas")]
-    public async Task<ActionResult<List<string>>> GetArtistas()
+    public async Task<ActionResult<StringResponseDto>> GetArtistas()
     {
         var artistas = await _musicasServices.GetArtistasAsync();
-        return Ok(artistas);
+        return Ok(new StringResponseDto
+        {
+            Total = artistas.Count,
+            Items = artistas
+        });
     }
 
+    /// <summary>
     /// Retorna artistas filtrados por gênero
+    /// </summary>
     /// <param name="genero">Nome do gênero (ex: rock)</param>
     [HttpGet("artistas/genero/{genero}")]
-    public async Task<ActionResult<List<string>>> GetArtistasPorGenero(string genero)
+    public async Task<ActionResult<StringResponseDto>> GetArtistasPorGenero(string genero)
     {
         if (string.IsNullOrWhiteSpace(genero))
             return BadRequest("Gênero não pode ser vazio");
@@ -51,15 +71,25 @@ public class MusicasController : ControllerBase
         var artistas = await _musicasServices.GetArtistasPorGeneroAsync(genero);
         
         if (artistas.Count == 0)
-            return NotFound($"Nenhum artista encontrado para o gênero '{genero}'");
+            return NotFound(new StringResponseDto
+            {
+                Total = 0,
+                Items = new List<string>()
+            });
 
-        return Ok(artistas);
+        return Ok(new StringResponseDto
+        {
+            Total = artistas.Count,
+            Items = artistas
+        });
     }
 
+    /// <summary>
     /// Retorna músicas filtradas por artista
+    /// </summary>
     /// <param name="artista">Nome do artista</param>
     [HttpGet("artista/{artista}")]
-    public async Task<ActionResult<List<MusicaDto>>> GetMusicasPorArtista(string artista)
+    public async Task<ActionResult<MusicasResponseDto>> GetMusicasPorArtista(string artista)
     {
         if (string.IsNullOrWhiteSpace(artista))
             return BadRequest("Artista não pode ser vazio");
@@ -67,15 +97,25 @@ public class MusicasController : ControllerBase
         var musicas = await _musicasServices.GetMusicasPorArtistaDtoAsync(artista);
         
         if (musicas.Count == 0)
-            return NotFound($"Nenhuma música encontrada para o artista '{artista}'");
+            return NotFound(new MusicasResponseDto
+            {
+                Total = 0,
+                Items = new List<MusicaDto>()
+            });
 
-        return Ok(musicas);
+        return Ok(new MusicasResponseDto
+        {
+            Total = musicas.Count,
+            Items = musicas
+        });
     }
 
+    /// <summary>
     /// Retorna músicas filtradas por tom
+    /// </summary>
     /// <param name="tom">Tom musical (ex: C, D, E)</param>
     [HttpGet("tom/{tom}")]
-    public async Task<ActionResult<List<MusicaDto>>> GetMusicasPorTom(string tom)
+    public async Task<ActionResult<MusicasResponseDto>> GetMusicasPorTom(string tom)
     {
         if (string.IsNullOrWhiteSpace(tom))
             return BadRequest("Tom não pode ser vazio");
@@ -83,8 +123,16 @@ public class MusicasController : ControllerBase
         var musicas = await _musicasServices.GetMusicasPorTomDtoAsync(tom);
         
         if (musicas.Count == 0)
-            return NotFound($"Nenhuma música encontrada para o tom '{tom}'");
+            return NotFound(new MusicasResponseDto
+            {
+                Total = 0,
+                Items = new List<MusicaDto>()
+            });
 
-        return Ok(musicas);
+        return Ok(new MusicasResponseDto
+        {
+            Total = musicas.Count,
+            Items = musicas
+        });
     }
 }
